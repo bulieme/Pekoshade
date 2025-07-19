@@ -9,10 +9,7 @@
         "/V3",
         "${file}"
       ],
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      }
+      "group": "build"
     },
     {
       "label": "Build (strict)",
@@ -24,15 +21,6 @@
         "${file}"
       ],
       "group": "build"
-    },
-    {
-      "label": "Launch",
-      "type": "shell",
-      "command": "./Build/RoshadeSetup.Exe",
-      "group": {
-        "kind": "test",
-        "isDefault": true
-      }
     }
   ]
 }

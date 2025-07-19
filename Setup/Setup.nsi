@@ -1,4 +1,4 @@
-﻿!include Attributes.nsh
+!include Attributes.nsh
 !include ModernUI.nsh
 !include DefaultSections.nsh
 !include InstallationFiles.nsh
@@ -10,15 +10,16 @@ Section Uninstall
     ReadRegStr $0 HKCU "${SELFREGLOC}" "RobloxPath"
     DeleteRegKey HKCU "${SELFREGLOC}"
     Delete "$INSTDIR\AppIcon.ico"
-    Delete "$INSTDIR\Uninstall Roshade.exe"
+    Delete "$INSTDIR\${UninstallerExe}"
     Delete "$0\${RENDERAPI}"
     Delete "$0\Reshade.ini"
     RMDir /r "$0\reshade-shaders"
     RMDir /r "$0\roshade"
+    RMDir /r $INSTDIR
 SectionEnd
 
 Function un.onInit
-    MessageBox MB_YESNO|MB_ICONQUESTION "This will uninstall Reshade from your Roblox directory. Are you sure you want to continue?" IDYES continue
+    MessageBox MB_YESNO|MB_ICONQUESTION "This will uninstall Reshade from your ProjectX directory. Are you sure you want to continue?" IDYES continue
         quit
     continue:
 FunctionEnd
@@ -38,26 +39,28 @@ Function .onInit
 
     InitPluginsDir
     SetOutPath $PLUGINSDIR
-    File "${RESHADESOURCE}\Reshade.ini"
+    File "${RESHADESOURCE}\Reshade.ini"#unextract things
     File "Shaders.ini"
     
     CreateDirectory ${PRESETTEMPFOLDER}
     !insertmacro ToLog $LOGFILE "Output" "$$INSTDIR: $INSTDIR"
     !insertmacro ToLog $LOGFILE "Output" "$$PLUGINSDIR: $PLUGINSDIR"
 
-    ${Locate} "$LOCALAPPDATA\Roblox\Versions" "/L=F /M=RobloxPlayerBeta.exe" "GetRobloxPath"
-    ${Locate} "$PROGRAMFILES\Roblox\Versions" "/L=F /M=RobloxPlayerBeta.exe" "GetRobloxPath"
+    #find projectx client until found
+    ${Locate} "$LOCALAPPDATA\ProjectX\Versions" "/L=F /M=${ROBLOXCLIENT}" "GetRobloxPath"
+    ${Locate} "$PROGRAMFILES\ProjectX\Versions" "/L=F /M=${ROBLOXCLIENT}" "GetRobloxPath"
 
     StrCmp $RobloxPath "" 0 +2
     call RobloxNotFoundError
 
-    ReadRegStr $R0 HKCU ${SELFREGLOC} "Version"
+    ReadRegStr $R0 HKCU ${SELFREGLOC} "Version" #idfk why they do this
     ${GetSectionNames} ${SHADERSINI} DefineRepositories
     !insertmacro ToLog $LOGFILE "Output" "Repositories: $Repositories"
 
-    nsProcess::_FindProcess "RobloxPlayerBeta.exe"
+    # check if client still running
+    nsProcess::_FindProcess "${ROBLOXCLIENT}"
     pop $R0
-    !insertmacro ToLog $LOGFILE "nsProcess" "FindProcess RobloxPlayerBeta.exe with code: $R0"
+    !insertmacro ToLog $LOGFILE "nsProcess" "FindProcess ${ROBLOXCLIENT} with code: $R0"
     StrCmp $R0 0 0 +2
     Call RobloxRunningError
     SectionSetSize ${ReshadeSection} 36860

@@ -1,18 +1,18 @@
 # Pekoshade [![Build](https://github.com/bulieme/Pekoshade/actions/workflows/nsis.yaml/badge.svg?branch=main)](https://github.com/bulieme/Pekoshade/actions/workflows/nsis.yaml) ![Downloads](https://img.shields.io/github/downloads/bulieme/Pekoshade/total) [![NSIS](https://badgen.net/badge/NSIS/3.08/cyan)](https://nsis.sourceforge.io/Download)
 
-Roshade is an installation package that makes it easy to correctly install Reshade presets and shaders to the Roblox directory. With Roshade, you can quickly and easily customize your Roblox experience with advanced visual effects.
+Pekoshade, A installation package that makes your Reshade presets & shaders installations easier to the ProjectX directory. Pekoshade can make your Pekora customizations quick and easy, without having the hassle to install Reshade for each Pekora clients.
 
 ## Key features:
-- Uses the registry to locate and uninstall Roblox, avoiding any incorrect uninstalls.
+- Automatically installs Reshade's dll in every Pekora clients (e.g, from 2017L, 2018L, etc.)
 - Allows you to select essential Reshade keybinds during installation.
-- Resolves previously unknown errors through dialog messages.
+- Resolves empty depthmap and normals.
 - Provides a description of system requirements for each component.
 - Automatically installs the required shaders from GitHub.
 
 ## Getting Started
-To get started with Roshade, you'll first need to download the latest release from the [releases](https://github.com/bituq/Roshade/releases) page. Once you've downloaded the installer, simply run it and follow the prompts to install Roshade. Once installation is complete, you'll be able to launch Roblox and start customizing your visual experience with the included Reshade presets and shaders.
+To get started with Pekoshade, you'll first need to download the latest release from the [releases](https://github.com/bulieme/Pekoshade/releases) page. Once you've downloaded the installer, simply run it and follow the prompts to install Pekoshade. Once installation is complete, you'll be able to launch Roblox and start customizing your visual experience with the included Reshade presets and shaders.
 
-If you have any questions or issues with Roshade, please feel free to open an issue on the GitHub repository, or visit the [Roshade website](https://roshade.com/) for more information.
+If you have any questions or issues with Pekoshade, please feel free to open an issue on the GitHub repository.
 
 ## Building the source
 The installer is written in [NSIS](https://nsis.sourceforge.io/Download "Download NSIS"), a popular open-source tool for creating Windows installers. To build the source, you'll need to have NSIS installed on your machine. I highly recommend reading through the [NSIS reference](https://nsis.sourceforge.io/Docs/Contents.html) before proceeding.

@@ -85,18 +85,6 @@ jobs:
       - name: Extract
         run: 7z e -o"nsis_plugins/x86-unicode" "${{ steps.accesscontrol.outputs.file-path }}" Plugins/i386-unicode/*.dll -y
 
-      - name: Download MoveFileFolder
-        uses: carlosperate/download-file-action@v2
-        with:
-          file-url: 'https://raw.githubusercontent.com/moai/moai-beta/master/distribute/windows-installer/nsis-includes/MoveFileFolder.nsh'
-          location: 'Setup/Util'
-
-      - name: Download StrContains
-        uses: carlosperate/download-file-action@v2
-        with:
-          file-url: 'https://raw.githubusercontent.com/vvaldez/yumi/master/StrContains.nsh'
-          location: 'Setup/Util'
-
       - name: Compile installer
         uses: joncloud/makensis-action@v3.7
         with:
@@ -108,4 +96,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Setup
-          path: RoshadeSetup.exe
+          path: PekoshadeSetup.exe

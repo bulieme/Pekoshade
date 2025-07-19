@@ -26,7 +26,7 @@
             SectionIn 1 RO
 
             CreateDirectory ${TEMPFOLDER}
-
+            
             SetOutPath $TEMP
             ${Explode} $2 "," $Repositories
             ${For} $3 1 $2
@@ -95,10 +95,9 @@
 
             !insertmacro MoveFile "$PLUGINSDIR\Reshade.ini" "$RobloxPath\Reshade.ini"
 
-            AccessControl::GrantOnFile "$RobloxPath\Reshade.ini" "Everyone" "FullAccess"
-            AccessControl::GrantOnFile "$RobloxPath\Reshade.ini" "SYSTEM" "FullAccess"
-            AccessControl::GrantOnFile "$RobloxPath\Reshade.ini" "Users" "FullAccess"
+            nsExec::Exec 'icacls "$RobloxPath\Reshade.ini" /grant "Everyone:(F)"'
 
+            #Write uninstaller registry
             ReadRegStr $1 HKCU "${ROBLOXREGLOC}" "curPlayerVer"
             !insertmacro RegStrPrint "${SELFREGLOC}" "RobloxVersion" $1
             !insertmacro RegStrPrint "${SELFREGLOC}" "Version" "${VERSION}"

@@ -1,18 +1,18 @@
 # Important
-InstallDir "$LOCALAPPDATA\Roshade"
-
+InstallDir "$LOCALAPPDATA\Pekoshade"
 
 # Attributes
-!define VERSION "1.4.1"
-!define MANUFACTURER "Zeal"
-!define NAME "Roshade"
-!define ROBLOXREGLOC "SOFTWARE\ROBLOX Corporation\Environments\roblox-player"
+!define VERSION "0.0.1"
+!define MANUFACTURER "bulieme"
+!define NAME "Pekoshade"
+!define ROBLOXREGLOC "SOFTWARE\ProjectX Corporation\ProjectX"
 !define SELFREGLOC "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}"
-!define UninstallerExe "Uninstall Roshade.exe"
-!define HELPLINK "https://discord.gg/sjSDVrCjFG"
-!define ABOUTLINK "https://Roshade.com/"
-!define UPDATELINK "https://github.com/bituq/Roshade/releases"
-!define RENDERAPI "d3d11.dll"
+!define ROBLOXCLIENT "ProjectXPlayerBeta.exe"
+!define UninstallerExe "Uninstall Pekoshade.exe"
+!define HELPLINK "https://google.com/" # supposed to be a discord server
+!define ABOUTLINK "https://google.com/"
+!define UPDATELINK "https://github.com/bulieme/Pekoshade/releases"
+!define RENDERAPI "dxgi.dll"
 
 # Directories
 !define PRESETFOLDER "$INSTDIR\presets"
@@ -37,12 +37,12 @@ Var PresetPriority # Determine which preset should be loaded. Lower = higher pri
 VIProductVersion "${VERSION}.0"
 VIAddVersionKey "ProductName" "${NAME}"
 VIAddVersionKey "CompanyName" "${MANUFACTURER}"
-VIAddVersionKey "LegalCopyright" "Copyright (C) 2021 Zeal"
+VIAddVersionKey "LegalCopyright" "Copyright (C) 2025 @bulieme"
 VIAddVersionKey "ProductVersion" "${VERSION}"
 VIAddVersionKey "FileVersion" "${VERSION}"
 
 Name "${NAME}"
 Caption "$(^Name) Installation"
-Outfile "..\RoshadeSetup.exe"
+Outfile "..\${NAME}Setup.exe"
 BrandingText "${MANUFACTURER}"
 CRCCHECK force
