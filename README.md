@@ -1,16 +1,21 @@
 # Pekoshade [![Build](https://github.com/bulieme/Pekoshade/actions/workflows/nsis.yaml/badge.svg?branch=main)](https://github.com/bulieme/Pekoshade/actions/workflows/nsis.yaml) ![Downloads](https://img.shields.io/github/downloads/bulieme/Pekoshade/total) [![NSIS](https://badgen.net/badge/NSIS/3.08/cyan)](https://nsis.sourceforge.io/Download)
 
+>[!WARNING] Pekoshade is based on Roshade but ONLY for Pekora, A roblox revival that supports 2017 up to 2021.
+
 Pekoshade, A installation package that makes your Reshade presets & shaders installations easier to the ProjectX directory. Pekoshade can make your Pekora customizations quick and easy, without having the hassle to install Reshade for each Pekora clients.
 
 ## Key features:
-- Automatically installs Reshade's dll in every Pekora clients (e.g, from 2017L, 2018L, etc.)
+- [WIP] Automatically installs Reshade's dll in every Pekora clients (e.g, from 2017L, 2018L, etc.)
 - Allows you to select essential Reshade keybinds during installation.
-- Resolves empty depthmap and normals.
+- Uses a custom version of [Reshade v5.2.2](https://github.com/Not-Smelly-Garbage/Reshade-Unlocked/releases) to bypass network restrictions set by Reshade.
 - Provides a description of system requirements for each component.
 - Automatically installs the required shaders from GitHub.
 
+## TODO:
+[ ] test
+
 ## Getting Started
-To get started with Pekoshade, you'll first need to download the latest release from the [releases](https://github.com/bulieme/Pekoshade/releases) page. Once you've downloaded the installer, simply run it and follow the prompts to install Pekoshade. Once installation is complete, you'll be able to launch Roblox and start customizing your visual experience with the included Reshade presets and shaders.
+To get started with Pekoshade, you'll first need to download the latest release from the [releases](https://github.com/bulieme/Pekoshade/releases) page. Once downloaded, simply run it and follow the prompts to install Pekoshade. Once installation is complete, you'll be able to launch Pekora and start customizing your visual experience with the included Reshade presets and shaders.
 
 If you have any questions or issues with Pekoshade, please feel free to open an issue on the GitHub repository.
 
