@@ -1,7 +1,16 @@
 # Pekoshade [![Build](https://github.com/bulieme/Pekoshade/actions/workflows/nsis.yaml/badge.svg?branch=main)](https://github.com/bulieme/Pekoshade/actions/workflows/nsis.yaml) ![Downloads](https://img.shields.io/github/downloads/bulieme/Pekoshade/total) [![NSIS](https://badgen.net/badge/NSIS/3.08/cyan)](https://nsis.sourceforge.io/Download)
 
->[!WARNING] Pekoshade is based on Roshade but ONLY for Pekora, A roblox revival that supports 2017 up to 2021.
-
+> [!IMPORTANT]
+> ### Pekoshade IS NOT MADE FOR A NORMAL ROBLOX CLIENTS
+> Pekoshade is built for Pekora clients, They have a different folder structure compared to normal Roblox client.
+> ```
+> ProjectX/
+> ├─ 2017L/
+> ├─ 2018L/
+> ├─ 2020L/
+> ├─ 2021M/
+> ├─ ProjectXLauncherBeta.exe
+> ```
 Pekoshade, A installation package that makes your Reshade presets & shaders installations easier to the ProjectX directory. Pekoshade can make your Pekora customizations quick and easy, without having the hassle to install Reshade for each Pekora clients.
 
 ## Key features:
