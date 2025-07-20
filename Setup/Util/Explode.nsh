@@ -27,7 +27,7 @@ Function Explode
   StrLen $explStrLen $explString
   StrLen $explSepLen $explSeparator
   StrCpy $explArrCount 1
- 
+
   ${If}   $explStrLen <= 1          ;   If we got a single character
   ${OrIf} $explSepLen > $explStrLen ;   or separator is larger than the string,
     Push    $explString             ;   then we return initial string with no change

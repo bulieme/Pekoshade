@@ -7,16 +7,54 @@ RequestExecutionLevel admin
 
 # Uninstallation
 Section Uninstall
-    ReadRegStr $0 HKCU "${SELFREGLOC}" "RobloxPath"
+    ReadRegStr $R0 HKCU "${SELFREGLOC}" "RobloxPath"
+    FindFirst $0 $1 "$R0\*"
+    !define VERLOOPID ${__LINE__}
+    loop_${VERLOOPID}:
+        ; Skip files and the special '.' and '..' directories
+        StrCmp $1 "" done_${VERLOOPID}
+        StrCmp $1 "." next_${VERLOOPID}
+        StrCmp $1 ".." next_${VERLOOPID}
+        ${If} ${FileExists} "$R0\$1\${ROBLOXCLIENT}"
+            push "$R0\$1"
+            Call un.UninstallReshadeFromClient
+        ${EndIf}
+    next_${VERLOOPID}:
+        FindNext $0 $1
+        GoTo loop_${VERLOOPID}
+    done_${VERLOOPID}:
+    !undef VERLOOPID
+    FindClose $0
+
     DeleteRegKey HKCU "${SELFREGLOC}"
-    Delete "$INSTDIR\AppIcon.ico"
-    Delete "$INSTDIR\${UninstallerExe}"
-    Delete "$0\${RENDERAPI}"
-    Delete "$0\Reshade.ini"
-    RMDir /r "$0\reshade-shaders"
-    RMDir /r "$0\roshade"
+    RMDir /r "$R0\reshade-shaders"
     RMDir /r $INSTDIR
+    RMDir /r "$R0\pekoshade"
+    RMDir /r "$SMPROGRAMS\${NAME}"
 SectionEnd
+
+Function un.UninstallReshadeFromClient
+    Exch $R0
+
+    Push $0
+    Push $1
+
+    MessageBox MB_YESNO|MB_ICONQUESTION "Uninstall Reshade in $R0?" IDYES continue
+        goto done
+    continue:
+
+    Delete "$R0\${RENDERAPI}"
+    Delete "$R0\Reshade.ini"
+    !insertmacro ToLog $LOGFILE "Output" "Uninstalled Reshade from $R0."
+
+    done:
+    ; Restore registers in reverse order to leave the stack clean before returning.
+    Pop $1
+    Pop $0
+    Pop $R0
+    Return
+FunctionEnd
+
 
 Function un.onInit
     MessageBox MB_YESNO|MB_ICONQUESTION "This will uninstall Reshade from your ProjectX directory. Are you sure you want to continue?" IDYES continue
@@ -28,7 +66,7 @@ FunctionEnd
 !insertmacro PresetFiles ${PRESETSOURCE} ${PRESETTEMPFOLDER}
 !insertmacro RequiredFiles ${RESHADESOURCE} $RobloxPath
 
-# Installer Init
+# Installer Init (this runs first)
 Function .onInit
     Var /GLOBAL LOGFILE
     System::Call 'ole32::CoCreateGuid(g .s)'
@@ -37,23 +75,23 @@ Function .onInit
     CreateDirectory ${LOGDIRECTORY}
     LogEx::Init "true" $LOGFILE
 
-    InitPluginsDir
+    # Extract temporary files needed by the installer to a temporary directory
     SetOutPath $PLUGINSDIR
-    File "${RESHADESOURCE}\Reshade.ini"#unextract things
+    File "${RESHADESOURCE}\Reshade.ini"
     File "Shaders.ini"
     
     CreateDirectory ${PRESETTEMPFOLDER}
     !insertmacro ToLog $LOGFILE "Output" "$$INSTDIR: $INSTDIR"
     !insertmacro ToLog $LOGFILE "Output" "$$PLUGINSDIR: $PLUGINSDIR"
 
-    #find projectx client until found
-    ${Locate} "$LOCALAPPDATA\ProjectX\Versions" "/L=F /M=${ROBLOXCLIENT}" "GetRobloxPath"
-    ${Locate} "$PROGRAMFILES\ProjectX\Versions" "/L=F /M=${ROBLOXCLIENT}" "GetRobloxPath"
+    ReadRegStr $R1 HKCU "${ROBLOXREGLOC}" "curPlayerVer"
+    ${If} ${FileExists} "$LOCALAPPDATA\ProjectX\Versions\$R1"
+        StrCpy $RobloxPath "$LOCALAPPDATA\ProjectX\Versions\$R1"
+    ${Else}
+        call RobloxNotFoundError
+    ${EndIf}
 
-    StrCmp $RobloxPath "" 0 +2
-    call RobloxNotFoundError
-
-    ReadRegStr $R0 HKCU ${SELFREGLOC} "Version" #idfk why they do this
+    ; ReadRegStr $R0 HKCU ${SELFREGLOC} "Version"
     ${GetSectionNames} ${SHADERSINI} DefineRepositories
     !insertmacro ToLog $LOGFILE "Output" "Repositories: $Repositories"
 
@@ -63,13 +101,8 @@ Function .onInit
     !insertmacro ToLog $LOGFILE "nsProcess" "FindProcess ${ROBLOXCLIENT} with code: $R0"
     StrCmp $R0 0 0 +2
     Call RobloxRunningError
-    SectionSetSize ${ReshadeSection} 36860
-FunctionEnd
 
-Function GetRobloxPath
-    StrCpy $0 StopLocate
-    StrCpy $RobloxPath $R8
-    push $0
+    SectionSetSize ${ReshadeSection} 36860
 FunctionEnd
 
 Function DefineRepositories

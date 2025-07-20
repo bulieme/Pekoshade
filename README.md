@@ -2,14 +2,22 @@
 
 > [!IMPORTANT]
 > ### Pekoshade IS NOT MADE FOR A NORMAL ROBLOX CLIENTS
-> Pekoshade is built for Pekora clients, They have a different folder structure compared to normal Roblox client.
-> ```
-> ProjectX/
-> ├─ 2017L/
-> ├─ 2018L/
-> ├─ 2020L/
-> ├─ 2021M/
-> ├─ ProjectXLauncherBeta.exe
+> Pekoshade is built for Pekora clients, They have a different folder structure compared to normal Roblox client. Pekora stores its roblox clients in the following directory:
+> ```python
+> %LOCALAPPDATA%/ProjectX/Versions/version-xxxxxx.../
+> ├── 2017L/
+> │   ├──ProjectXPlayerBeta.exe
+> │   └── ...
+> ├── 2018L/
+> │   ├──ProjectXPlayerBeta.exe
+> │   └── ...
+> ├── 2020L/
+> │   ├──ProjectXPlayerBeta.exe
+> │   └── ...
+> ├── 2021M/
+> │   ├──ProjectXPlayerBeta.exe
+> │   └── ...
+> └── ProjectXPlayerLauncher.exe # Bootstrapper when user joins in a pekora.zip game.
 > ```
 Pekoshade, A installation package that makes your Reshade presets & shaders installations easier to the ProjectX directory. Pekoshade can make your Pekora customizations quick and easy, without having the hassle to install Reshade for each Pekora clients.
 
@@ -20,8 +28,10 @@ Pekoshade, A installation package that makes your Reshade presets & shaders inst
 - Provides a description of system requirements for each component.
 - Automatically installs the required shaders from GitHub.
 
-## TODO:
-[ ] test
+## TODOs:
+- [ ] Make Roshade and reshade folders outside clients
+- [ ] Make support for all roblox clients
+- [ ] FIX licensing issues, idk why they copyright A OPEN SOURCE project
 
 ## Getting Started
 To get started with Pekoshade, you'll first need to download the latest release from the [releases](https://github.com/bulieme/Pekoshade/releases) page. Once downloaded, simply run it and follow the prompts to install Pekoshade. Once installation is complete, you'll be able to launch Pekora and start customizing your visual experience with the included Reshade presets and shaders.

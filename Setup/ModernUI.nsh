@@ -1,4 +1,4 @@
-InstType full
+InstType Full
 
 !include MUI2.nsh
 !include "CustomDlg\ReshadeSettings.nsdinc"
@@ -9,8 +9,8 @@ InstType full
 !define MUI_WELCOMEFINISHPAGE_BITMAP "Graphics\wizardImage.bmp"
 
 /* Welcome Page */
-!define MUI_WELCOMEPAGE_TITLE "Roshade Installation"
-!define MUI_WELCOMEPAGE_TEXT "This will install Reshade and the Roshade preset on your computer.$\n$\nThe shaders will automatically be download from github during installation.$\n$\nClick Next to continue."
+!define MUI_WELCOMEPAGE_TITLE "${NAME} Installation"
+!define MUI_WELCOMEPAGE_TEXT "This will install Reshade and the ${NAME} presets on your computer.$\n$\nThe shaders will automatically be download from github during installation.$\n$\nClick Next to continue."
 !insertmacro MUI_PAGE_WELCOME
 
 /* License Page */
@@ -34,18 +34,17 @@ FunctionEnd
 !insertmacro MUI_PAGE_INSTFILES
 
 /* Finish Page */
-!define MUI_FINISHPAGE_TEXT "Roshade has been installed on your computer.$\n$\nThe changes will be in effect next time you launch Roblox.$\n$\nClick Finish to close Setup."
-!define MUI_FINISHPAGE_LINK "Join the Discord server"
-!define MUI_FINISHPAGE_LINK_LOCATION "https://discord.gg/sjSDVrCjFG"
-!define MUI_FINISHPAGE_SHOWREADME_NOTCHECKED
-!define MUI_FINISHPAGE_SHOWREADME_TEXT "Subscribe to Zeal"
-!define MUI_FINISHPAGE_SHOWREADME "https://www.youtube.com/channel/UCfN0Oe5XU6Z8m266xj2jS7Q?sub_confirmation=1"
+!define MUI_FINISHPAGE_TEXT "${NAME} has been installed on your computer.$\n$\nThe changes will be in effect next time you launch Pekora.$\n$\nClick Finish to close Setup."
+!define MUI_FINISHPAGE_LINK "Credits to Zeal and bituq for making Roshade opensource. (And making ${NAME} possible!)"
+!define MUI_FINISHPAGE_LINK_LOCATION "https://github.com/bituq/Roshade"
+
 !insertmacro MUI_PAGE_FINISH
 
 /* Uninstall Files Page */
 !insertmacro MUI_UNPAGE_INSTFILES
 
 /* Uninstall Finish Page */
+!define MUI_FINISHPAGE_TEXT "${NAME} has been uninstalled on your computer.$\n$\nClick Finish to close Setup."
 
 !insertmacro MUI_UNPAGE_FINISH
 

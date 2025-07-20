@@ -7,7 +7,8 @@
 !include ErrorHandling.nsh
 !insertmacro Locate
 
-!macro RequiredFiles SourcePath OutPath
+!macro RequiredFiles SourcePath OutPath 
+    ;Note: OutPath is a path leading to the %LOCALAPPDATA%\ProjectX\Versions\version-xxxxx folder
     SectionGroup "-Required"
         Section "-Roshade"
             SectionIn 1 RO
@@ -19,7 +20,7 @@
 
             CreateDirectory "$SMPROGRAMS\${NAME}"
             CreateShortCut "$SMPROGRAMS\${NAME}\Uninstall ${NAME}.lnk" "$INSTDIR\${UninstallerExe}" "" "${APPICON}"
-
+            
             CreateDirectory "$PICTURES\${NAME}"
         SectionEnd
         Section "-Reshade" ReshadeSection
@@ -34,14 +35,7 @@
                 ${Explode} $0 "@" $0
                 Call InstallShadersAsync
             ${Next}
-
-            StrCmp $LauncherTransferID "" +4
-            NScurl::wait /ID $LauncherTransferID /END
-            !insertmacro ToLog $LOGFILE "NScurl" "Transfer with ID $LauncherTransferID has completed. Executing RobloxPlayerLauncher.exe."
-            ExecWait "$PLUGINSDIR\RobloxPlayerLauncher.exe"
-
-            StrCpy $ShaderDir "$RobloxPath\reshade-shaders"
-            CreateDirectory $ShaderDir
+            
 
             FindFirst $0 $1 "${PRESETTEMPFOLDER}\*.ini"
             !define PRESETID ${__LINE__}
@@ -56,49 +50,37 @@
             !undef PRESETID
             FindClose $0
             RMDir /r ${PRESETTEMPFOLDER}
-            RMDir /r "$RobloxPath\roshade"
 
-            CreateDirectory "$RobloxPath\roshade"
-            SetOutPath "$RobloxPath\roshade"
-            File /r "..\Files\Roshade\*"
-
-            delete "$RobloxPath\opengl32.dll"
-            delete "$RobloxPath\d3d9.dll"
-            delete "$RobloxPath\dxgi.dll"
-
-            SetOutPath $RobloxPath
-            File "${SourcePath}\reshade.dll"
-            !insertmacro ToLog $LOGFILE "Output" "Rendering API: ${RENDERAPI}."
-            Rename "$RobloxPath\reshade.dll" "$RobloxPath\${RENDERAPI}"
-
-            ${If} ${FileExists} "$RobloxPath\Reshade.ini"
-                !insertmacro ToLog $LOGFILE "Output" "Existing Reshade settings have been found."
-                ReadINIStr $0 "$RobloxPath\Reshade.ini" "INPUT" "KeyEffects"
-                ReadINIStr $1 "$RobloxPath\Reshade.ini" "INPUT" "KeyOverlay"
-                ${IfNot} $0 == $KeyEffects
-                ${OrIfNot} $1 == $KeyOverlay
-                push $1
-                push $0
-                Call SettingsExistingError
-                ${Else}
-                !insertmacro ToLog $LOGFILE "Output" "Existing settings match the chosen settings."
-                ${EndIf}
-            ${Else}
-                !insertmacro IniPrint "${RESHADEINI}" "INPUT" "KeyEffects" $KeyEffects
-                !insertmacro IniPrint "${RESHADEINI}" "INPUT" "KeyOverlay" $KeyOverlay
-            ${EndIf}
             
-            !insertmacro IniPrint "${RESHADEINI}" "SCREENSHOT" "SavePath" "$PICTURES\${NAME}"
-            !insertmacro ToLog $LOGFILE "Output" "Screenshot path set to $PICTURES\${NAME}."
+            RMDir /r "$RobloxPath\pekoshade"
+            CreateDirectory "$RobloxPath\pekoshade"
+            SetOutPath "$RobloxPath\pekoshade"
+            File /r "${PEKOSHADESOURCE}\*"
+            !insertmacro ToLog $LOGFILE "Output" "Moving Pekoshade files to $RobloxPath\pekoshade."
 
-            Delete "$RobloxPath\Reshade.ini"
+            ; Loops through in every roblox folder inside the pekora versions folder
+            
+            FindFirst $0 $1 "$RobloxPath\*"
+            !define VERSIONLOOPID ${__LINE__}
+            loop_${VERSIONLOOPID}:
+                ; Skip files and the special '.' and '..' directories
+                StrCmp $1 "" done_${VERSIONLOOPID}
+                StrCmp $1 "." next_${VERSIONLOOPID}
+                StrCmp $1 ".." next_${VERSIONLOOPID}
 
-            !insertmacro MoveFile "$PLUGINSDIR\Reshade.ini" "$RobloxPath\Reshade.ini"
-
-            nsExec::Exec 'icacls "$RobloxPath\Reshade.ini" /grant "Everyone:(F)"'
+                ${If} ${FileExists} "$RobloxPath\$1\${ROBLOXCLIENT}"
+                    push "$RobloxPath\$1"
+                    Call InstallReshadeToClient
+                ${EndIf}
+            next_${VERSIONLOOPID}:
+                FindNext $0 $1
+                GoTo loop_${VERSIONLOOPID}
+            done_${VERSIONLOOPID}:
+            !undef VERSIONLOOPID
+            FindClose $0
 
             #Write uninstaller registry
-            ReadRegStr $1 HKCU "${ROBLOXREGLOC}" "curPlayerVer"
+            ReadRegStr $1 HKCU "${ROBLOXREGLOC}" "curPlayerVer" ; reads the current version of pekora client
             !insertmacro RegStrPrint "${SELFREGLOC}" "RobloxVersion" $1
             !insertmacro RegStrPrint "${SELFREGLOC}" "Version" "${VERSION}"
             !insertmacro RegStrPrint "${SELFREGLOC}" "RobloxPath" $RobloxPath
@@ -178,7 +160,7 @@ Function InstallShadersAsync
     !define PRESETID ${__LINE__}
     loop_${PRESETID}:
         StrCmp $R9 "" done_${PRESETID}
-        ${ConfigRead} "${PRESETTEMPFOLDER}\$R9" "Techniques=" $Techniques
+        ReadINIStr $Techniques "${PRESETTEMPFOLDER}\$R9" "GENERAL" "Techniques"
         ${Explode} $R2 "," $Techniques
         ${For} $R3 1 $R2
             pop $R4
@@ -208,4 +190,65 @@ Function InstallShadersAsync
     !insertmacro ToLog $LOGFILE "NScurl" "Adding installation of $R1 to a background thread. ($R2)"
     DetailPrint "$R1 GET"
     skip:
+FunctionEnd
+
+Function InstallReshadeToClient
+    Push $R0
+    Push $0
+    Push $1
+
+    Exch 3
+    Pop $R0
+
+    MessageBox MB_YESNO|MB_ICONQUESTION "Install reshade to $R0?" IDYES continue
+        goto done
+    continue:
+
+    !insertmacro ToLog $LOGFILE "Output" "Installing Reshade to client folder: $R0"
+
+    StrCpy $ShaderDir "$RobloxPath\reshade-shaders"
+    CreateDirectory $ShaderDir
+
+    delete "$R0\opengl32.dll"
+    delete "$R0\d3d9.dll"
+    delete "$R0\dxgi.dll"
+
+    SetOutPath $R0
+    File "${RESHADESOURCE}\reshade.dll"
+    !insertmacro ToLog $LOGFILE "Output" "Rendering API for $R0: ${RENDERAPI}."
+    Rename "$R0\reshade.dll" "$R0\${RENDERAPI}"
+
+    ${If} ${FileExists} "$R0\Reshade.ini"
+        !insertmacro ToLog $LOGFILE "Output" "Existing Reshade settings have been found."
+        ReadINIStr $0 "$R0\Reshade.ini" "INPUT" "KeyEffects"
+        ReadINIStr $1 "$R0\Reshade.ini" "INPUT" "KeyOverlay"
+        ${IfNot} $0 == $KeyEffects
+        ${OrIfNot} $1 == $KeyOverlay
+            push $1
+            push $0
+            Call SettingsExistingError
+        ${Else}
+            !insertmacro ToLog $LOGFILE "Output" "Existing settings match the chosen settings."
+        ${EndIf}
+    ${EndIf}
+
+    !insertmacro IniPrint "${RESHADEINI}" "INPUT" "KeyEffects" $KeyEffects
+    !insertmacro IniPrint "${RESHADEINI}" "INPUT" "KeyOverlay" $KeyOverlay
+    !insertmacro IniPrint "${RESHADEINI}" "SCREENSHOT" "SavePath" "$PICTURES\${NAME}"
+    !insertmacro ToLog $LOGFILE "Output" "Screenshot path set to $PICTURES\${NAME}."
+    Delete "$R0\Reshade.ini"
+    
+    WriteINIStr "$PLUGINSDIR\Reshade.ini" "GENERAL" "PresetPath" "${PRESETFOLDER}"
+    !insertmacro ToLog $LOGFILE "Output" "Preset path set to ${PRESETFOLDER}."
+    !insertmacro MoveFile "$PLUGINSDIR\Reshade.ini" "$R0\Reshade.ini"
+    !insertmacro ToLog $LOGFILE "Output" "Moving Reshade.ini to $R0."
+
+    nsExec::Exec 'icacls "$R0\Reshade.ini" /grant "Everyone:(F)"'
+
+    done:
+    # Restore registers in reverse order to leave the stack clean before returning.
+    Pop $1
+    Pop $0
+    Pop $R0
+    Return
 FunctionEnd

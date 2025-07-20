@@ -32,9 +32,9 @@ Function SettingsExistingError
 FunctionEnd
 
 Function RobloxNotFoundError
-    !insertmacro ToLog $LOGFILE "Error" "Roblox was not found."
-    NScurl::http GET "https://www.roblox.com/download/client" "$PLUGINSDIR\RobloxPlayerLauncher.exe" /BACKGROUND /END
-    pop $LauncherTransferID
+    !insertmacro ToLog $LOGFILE "Error" "Pekora client was not found."
+    MessageBox MB_OK|MB_ICONEXCLAMATION "Pekora is not installed.$\nPlease install Pekora from https://pekora.zip/ and try again." 
+        Abort
 FunctionEnd
 
 Function RobloxRunningError
