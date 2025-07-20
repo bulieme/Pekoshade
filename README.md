@@ -29,8 +29,9 @@ Pekoshade, A installation package that makes your Reshade presets & shaders inst
 - Automatically installs the required shaders from GitHub.
 
 ## TODOs:
-- [ ] Make Roshade and reshade folders outside clients
-- [ ] Make support for all roblox clients
+- [x] Make pekoshade and reshade folders outside clients
+- [x] Make support for all roblox clients
+- [ ] Make use of the fonts in the pekoshade folder (edit Reshade.ini)
 - [ ] FIX licensing issues, idk why they copyright A OPEN SOURCE project
 
 ## Getting Started
