@@ -33,6 +33,7 @@ Pekoshade, A installation package that makes your Reshade presets & shaders inst
 - [x] Make support for all roblox clients
 - [ ] Make use of the fonts in the pekoshade folder (edit Reshade.ini)
 - [ ] FIX licensing issues, idk why they copyright A OPEN SOURCE project
+- [ ] Make Pekoshade work in all roblox revivals
 
 ## Getting Started
 To get started with Pekoshade, you'll first need to download the latest release from the [releases](https://github.com/bulieme/Pekoshade/releases) page. Once downloaded, simply run it and follow the prompts to install Pekoshade. Once installation is complete, you'll be able to launch Pekora and start customizing your visual experience with the included Reshade presets and shaders.
