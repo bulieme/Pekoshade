@@ -35,7 +35,6 @@
                 ${Explode} $0 "@" $0
                 Call InstallShadersAsync
             ${Next}
-            
 
             FindFirst $0 $1 "${PRESETTEMPFOLDER}\*.ini"
             !define PRESETID ${__LINE__}
@@ -241,7 +240,7 @@ Function InstallReshadeToClient
     !insertmacro ToLog $LOGFILE "Output" "Screenshot path set to $PICTURES\${NAME}."
     Delete "$R0\Reshade.ini"
     
-    !insertmacro IniPrint "$PLUGINSDIR\Reshade.ini" "GENERAL" "PresetPath" "${PRESETFOLDER}"
+    !insertmacro IniPrint "$PLUGINSDIR\Reshade.ini" "GENERAL" "PresetPath" "${PRESETFOLDER}\ReshadePreset.ini"
     !insertmacro ToLog $LOGFILE "Output" "Preset path set to ${PRESETFOLDER}."
     !insertmacro MoveFile "$PLUGINSDIR\Reshade.ini" "$R0\Reshade.ini"
 
