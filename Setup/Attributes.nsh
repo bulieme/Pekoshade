@@ -2,7 +2,7 @@
 InstallDir "$LOCALAPPDATA\Pekoshade"
 
 # Attributes
-!define VERSION "0.0.1"
+!define VERSION "0.0.2"
 !define MANUFACTURER "bulieme"
 !define NAME "Pekoshade"
 !define ROBLOXREGLOC "SOFTWARE\ProjectX Corporation\ProjectX"
