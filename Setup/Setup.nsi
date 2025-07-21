@@ -77,7 +77,6 @@ Function .onInit
 
     # Extract temporary files needed by the installer to a temporary directory
     SetOutPath $PLUGINSDIR
-    File "${RESHADESOURCE}\Reshade.ini"
     File "Shaders.ini"
     
     CreateDirectory ${PRESETTEMPFOLDER}

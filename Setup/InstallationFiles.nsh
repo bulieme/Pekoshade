@@ -209,9 +209,12 @@ Function InstallReshadeToClient
     StrCpy $ShaderDir "$RobloxPath\reshade-shaders"
     CreateDirectory $ShaderDir
 
-    delete "$R0\opengl32.dll"
-    delete "$R0\d3d9.dll"
-    delete "$R0\dxgi.dll"
+    Delete "$R0\opengl32.dll"
+    Delete "$R0\d3d9.dll"
+    Delete "$R0\dxgi.dll"
+
+    SetOutPath $PLUGINSDIR
+    File "${RESHADESOURCE}\Reshade.ini"
 
     SetOutPath $R0
     File "${RESHADESOURCE}\reshade.dll"
@@ -232,15 +235,16 @@ Function InstallReshadeToClient
         ${EndIf}
     ${EndIf}
 
-    !insertmacro IniPrint "${RESHADEINI}" "INPUT" "KeyEffects" $KeyEffects
-    !insertmacro IniPrint "${RESHADEINI}" "INPUT" "KeyOverlay" $KeyOverlay
-    !insertmacro IniPrint "${RESHADEINI}" "SCREENSHOT" "SavePath" "$PICTURES\${NAME}"
+    !insertmacro IniPrint "$PLUGINSDIR\Reshade.ini" "INPUT" "KeyEffects" $KeyEffects
+    !insertmacro IniPrint "$PLUGINSDIR\Reshade.ini" "INPUT" "KeyOverlay" $KeyOverlay
+    !insertmacro IniPrint "$PLUGINSDIR\Reshade.ini" "SCREENSHOT" "SavePath" "$PICTURES\${NAME}"
     !insertmacro ToLog $LOGFILE "Output" "Screenshot path set to $PICTURES\${NAME}."
     Delete "$R0\Reshade.ini"
     
-    WriteINIStr "$PLUGINSDIR\Reshade.ini" "GENERAL" "PresetPath" "${PRESETFOLDER}"
+    !insertmacro IniPrint "$PLUGINSDIR\Reshade.ini" "GENERAL" "PresetPath" "${PRESETFOLDER}"
     !insertmacro ToLog $LOGFILE "Output" "Preset path set to ${PRESETFOLDER}."
     !insertmacro MoveFile "$PLUGINSDIR\Reshade.ini" "$R0\Reshade.ini"
+
     !insertmacro ToLog $LOGFILE "Output" "Moving Reshade.ini to $R0."
 
     nsExec::Exec 'icacls "$R0\Reshade.ini" /grant "Everyone:(F)"'
