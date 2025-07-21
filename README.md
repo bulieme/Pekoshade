@@ -32,6 +32,7 @@ Pekoshade, A installation package that makes your Reshade presets & shaders inst
 - [x] Make pekoshade and reshade folders outside clients
 - [x] Make support for all roblox clients
 - [ ] Make use of the fonts in the pekoshade folder (edit Reshade.ini)
+- [ ] Rebrand installer, change logo and icon stuff.
 - [ ] FIX licensing issues, idk why they copyright A OPEN SOURCE project
 - [ ] Make Pekoshade work in all roblox revivals
 
