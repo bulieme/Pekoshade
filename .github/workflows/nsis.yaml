@@ -20,7 +20,7 @@ jobs:
           file-url: 'https://nsis.sourceforge.io/mediawiki/images/d/d1/LogEx.zip'
       
       - name: Extract
-        run: 7z e -o"nsis_plugins/x86-unicode" "${{ steps.logex.outputs.file-path }}" Plugins/*.dll -y
+        run: 7z e -o"nsis_plugins/x86-unicode" "${{ steps.logex.outputs.file-path }}" Plugins/Unicode/*.dll -y
 
       - name: Download NsisUnz
         uses: carlosperate/download-file-action@v2
