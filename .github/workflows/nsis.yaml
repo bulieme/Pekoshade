@@ -26,7 +26,7 @@ jobs:
         uses: carlosperate/download-file-action@v2
         id: nsisunz
         with:
-          file-url: 'https://nsis.sourceforge.io/mediawiki/images/1/1c/Nsisunz.zip'
+          file-url: 'https://nsis.sourceforge.io/mediawiki/images/5/5a/NSISunzU.zip'
 
       - name: Extract
         run: 7z e -o"nsis_plugins/x86-unicode" "${{ steps.nsisunz.outputs.file-path }}" *.dll -r -y
