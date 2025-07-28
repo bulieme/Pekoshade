@@ -89,7 +89,7 @@ jobs:
         uses: joncloud/makensis-action@v3.7
         with:
           script-file: Setup/Setup.nsi
-          arguments: /X"SetCompressor /V3 /FINAL lzma" 
+          arguments: /V3 /X"SetCompressor /FINAL lzma" 
           additional-plugin-paths: nsis_plugins
 
       - name:  Artifact
